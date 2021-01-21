@@ -30,15 +30,22 @@ const PlaceOrderScreen = ({ history }) => {
     Number(cart.taxPrice)
   ).toFixed(2)
 
-  const orderCreate = useSelector((state) => state.orderCreateReducer)
+  const orderCreate = useSelector((state) => state.orderCreate)
   const { order, success, error } = orderCreate
 
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
   useEffect(() => {
+    if (!userInfo) {
+      history.push('/login')
+    }
+
     if (success) {
       history.push(`/order/${order._id}`)
     }
     // eslint-disable-next-line
-  }, [history, success])
+  }, [history, success, userInfo])
 
   const placeOrderHandler = () => {
     dispatch(
